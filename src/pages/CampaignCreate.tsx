@@ -39,10 +39,16 @@ const CampaignCreate = () => {
   const createMutation = useMutation(createCampaign, {
     onSuccess: (data) => {
       toast.success('Campaign created successfully!');
-      navigate(`/campaigns/${data.id}`);
+      // Ensure we're using the correct campaign ID from the response
+      if (data && data.id) {
+        navigate(`/campaigns/${data.id}`, { replace: true });
+      } else {
+        navigate('/campaigns');
+      }
     },
-    onError: () => {
-      toast.error('Failed to create campaign');
+    onError: (error) => {
+      toast.error('Failed to create campaign. Please try again.');
+      console.error('Campaign creation error:', error);
     }
   });
 
@@ -165,7 +171,7 @@ const CampaignCreate = () => {
               disabled={createMutation.isLoading}
               icon={<Rocket size={16} />}
             >
-              Launch Campaign
+              {createMutation.isLoading ? 'Launching...' : 'Launch Campaign'}
             </Button>
           ) : (
             <Button
