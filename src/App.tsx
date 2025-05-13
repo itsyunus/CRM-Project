@@ -40,7 +40,7 @@ function AppRoutes() {
     <Routes>
       <Route path="/login" element={!isAuthenticated ? <Login /> : <Navigate to="/" replace />} />
       
-      <Route path="/" element={
+      <Route element={
         <ProtectedRoute>
           <DashboardLayout />
         </ProtectedRoute>
@@ -51,6 +51,9 @@ function AppRoutes() {
         <Route path="campaigns/create" element={<CampaignCreate />} />
         <Route path="campaigns/:id" element={<CampaignDetail />} />
       </Route>
+
+      {/* Catch all route - redirect to dashboard */}
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

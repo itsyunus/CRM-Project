@@ -19,7 +19,7 @@ const DashboardLayout = () => {
 
   const handleLogout = () => {
     logout();
-    navigate('/login');
+    navigate('/login', { replace: true });
   };
 
   const navigationItems = [
@@ -28,6 +28,13 @@ const DashboardLayout = () => {
     { name: 'Campaigns', path: '/campaigns', icon: <Megaphone size={20} /> },
     { name: 'Settings', path: '/settings', icon: <Settings size={20} /> },
   ];
+
+  const isActivePath = (path: string) => {
+    if (path === '/') {
+      return location.pathname === '/';
+    }
+    return location.pathname.startsWith(path);
+  };
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -50,12 +57,12 @@ const DashboardLayout = () => {
         <div className="flex flex-col h-full">
           {/* Logo */}
           <div className="px-6 py-6 border-b border-gray-200">
-            <div className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <div className="bg-gradient-to-r from-blue-800 to-blue-600 rounded-md p-1">
                 <Megaphone size={24} className="text-white" />
               </div>
               <span className="text-xl font-semibold text-gray-800">CampaignCRM</span>
-            </div>
+            </Link>
           </div>
 
           {/* Navigation */}
@@ -65,7 +72,7 @@ const DashboardLayout = () => {
                 key={item.path}
                 to={item.path}
                 className={`flex items-center px-3 py-3 rounded-md transition-colors ${
-                  location.pathname === item.path
+                  isActivePath(item.path)
                     ? 'bg-blue-50 text-blue-700'
                     : 'text-gray-600 hover:bg-gray-100'
                 }`}
